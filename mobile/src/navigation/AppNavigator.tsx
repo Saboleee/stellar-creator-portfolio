@@ -5,6 +5,21 @@
  * All screens are themed via useTheme() (Issue 3).
  */
 
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { DashboardScreen }      from '../screens/DashboardScreen';
+import { ProfileScreen }        from '../screens/ProfileScreen';
+import { DetailsView }          from '../screens/DetailsView';
+import { ThemeSettingsScreen }  from '../screens/ThemeSettingsScreen';
+import { OfflineScreen }        from '../screens/OfflineScreen';
+import { useTheme }             from '../theme/ThemeProvider';
+import { ScreenTransitions, GestureConfig } from './transitions';
+import { RootStackParamList, MainTabParamList } from '../types';
+import { FontSize, FontWeight } from '../theme/tokens';
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import {
@@ -109,7 +124,7 @@ function MainTabs() {
           ),
         }}
       >
-        {() => <Placeholder name="Profile" />}
+        {() => <ProfileScreen />}
       </Tab.Screen>
 
       <Tab.Screen
@@ -175,6 +190,14 @@ export function AppNavigator() {
           options={{ animation: ScreenTransitions.Dashboard }}
         >
           {() => <DashboardScreen />}
+        </Stack.Screen>
+        <Stack.Screen
+          name="DetailsView"
+          options={{ animation: ScreenTransitions.Dashboard }}
+        >
+          {({ navigation }) => (
+            <DetailsView onBack={() => navigation.goBack()} />
+          )}
         </Stack.Screen>
         <Stack.Screen
           name="LanguageSettings"

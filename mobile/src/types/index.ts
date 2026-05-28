@@ -105,6 +105,7 @@ export type RootStackParamList = {
   MainTabs: undefined;
   Dashboard: { period?: AnalyticsPeriod };
   LanguageSettings: undefined;
+  DetailsView: { itemId?: string };
   BiometricAuth: undefined;
 };
 
