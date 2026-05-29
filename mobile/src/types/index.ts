@@ -120,6 +120,8 @@ export type RootStackParamList = {
   // Infinite scroll screens
   BountyList: undefined;
   CreatorDirectory: undefined;
+  // Auth gateway
+  Login: undefined;
 };
 
 export type MainTabParamList = {
