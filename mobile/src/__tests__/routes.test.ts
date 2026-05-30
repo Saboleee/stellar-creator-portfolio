@@ -18,8 +18,11 @@ describe('ROUTES', () => {
   });
 
   it('declares the expected app routes', () => {
-    expect(Object.keys(ROUTES.APP).sort()).toEqual(['HOME']);
+    expect(Object.keys(ROUTES.APP).sort()).toEqual(['AUDIO', 'HOME', 'MULTISIG', 'P2P']);
     expect(ROUTES.APP.HOME).toBe('/(app)/home');
+    expect(ROUTES.APP.AUDIO).toBe('/(app)/audio');
+    expect(ROUTES.APP.MULTISIG).toBe('/(app)/multisig');
+    expect(ROUTES.APP.P2P).toBe('/(app)/p2p');
   });
 
   it('uses absolute, route-group-prefixed paths for every route', () => {
@@ -27,6 +30,9 @@ describe('ROUTES', () => {
       ROUTES.AUTH.LOGIN,
       ROUTES.AUTH.ONBOARDING,
       ROUTES.APP.HOME,
+      ROUTES.APP.AUDIO,
+      ROUTES.APP.MULTISIG,
+      ROUTES.APP.P2P,
     ];
     for (const route of allRoutes) {
       expect(route).toMatch(/^\/\((auth|app)\)\//);
@@ -38,6 +44,9 @@ describe('ROUTES', () => {
       ROUTES.AUTH.LOGIN,
       ROUTES.AUTH.ONBOARDING,
       ROUTES.APP.HOME,
+      ROUTES.APP.AUDIO,
+      ROUTES.APP.MULTISIG,
+      ROUTES.APP.P2P,
     ];
     expect(new Set(allRoutes).size).toBe(allRoutes.length);
   });

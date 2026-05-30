@@ -24,6 +24,12 @@ export const ROUTES = {
   APP: {
     /** Authenticated home screen. */
     HOME: '/(app)/home',
+    /** Mobile background audio playback screen. */
+    AUDIO: '/(app)/audio',
+    /** Multi-signature approval workflow. */
+    MULTISIG: '/(app)/multisig',
+    /** Peer-to-peer transfer flow. */
+    P2P: '/(app)/p2p',
   },
 } as const;
 

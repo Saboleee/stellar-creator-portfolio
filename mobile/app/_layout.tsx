@@ -12,6 +12,9 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { ThemeProvider } from '../src/theme/ThemeProvider';
+import { NetworkProvider } from '../src/offline/NetworkProvider';
+import { ToastProvider } from '../src/context/ToastContext';
 
 /**
  * Application root layout rendered once at the top of the navigation tree.
@@ -21,13 +24,18 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 export default function RootLayout(): React.JSX.Element {
   return (
     <GestureHandlerRootView style={styles.root}>
-      {/* Global providers are composed here in Issues 3 & 4. */}
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(app)" />
-      </Stack>
-      <StatusBar style="auto" />
+      <ThemeProvider>
+        <NetworkProvider>
+          <ToastProvider>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(auth)" />
+              <Stack.Screen name="(app)" />
+            </Stack>
+            <StatusBar style="auto" />
+          </ToastProvider>
+        </NetworkProvider>
+      </ThemeProvider>
     </GestureHandlerRootView>
   );
 }

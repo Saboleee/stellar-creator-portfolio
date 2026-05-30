@@ -8,16 +8,25 @@ exports[`RootLayout matches the snapshot (gesture root + stack navigator tree) 1
     }
   }
 >
-  <Stack>
-    <StackScreen
-      name="index"
-    />
-    <StackScreen
-      name="(auth)"
-    />
-    <StackScreen
-      name="(app)"
-    />
-  </Stack>
+  <ThemeProvider>
+    <NetworkProvider>
+      <ToastProvider>
+        <Stack>
+          <StackScreen
+            name="index"
+          />
+          <StackScreen
+            name="(auth)"
+          />
+          <StackScreen
+            name="(app)"
+          />
+        </Stack>
+        <StatusBar
+          style="auto"
+        />
+      </ToastProvider>
+    </NetworkProvider>
+  </ThemeProvider>
 </View>
 `;

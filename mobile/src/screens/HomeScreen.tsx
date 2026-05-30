@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import * as Haptics from "expo-haptics";
 import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import { useTheme } from "../theme/ThemeProvider";
 import { useOfflineData } from "../hooks/useOfflineData";
 import { useInfiniteScroll } from "../hooks/useInfiniteScroll";
@@ -21,6 +22,7 @@ import {
   HomeData,
   RootStackParamList,
 } from "../types";
+import { ROUTES } from "../constants/routes";
 import { MetricCard } from "../components/dashboard/MetricCard";
 import { PortfolioCard } from "../components/home/PortfolioCard";
 import { ProjectBountyList } from "../components/home/ProjectBountyList";
@@ -150,6 +152,7 @@ async function fetchHomeData(): Promise<HomeData> {
 
 export function HomeScreen() {
   const { colors, isDark } = useTheme();
+  const router = useRouter();
   const navigation =
     useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { data, isLoading, isStale, cachedAt, refetch } =
@@ -157,6 +160,21 @@ export function HomeScreen() {
       ttlMs: 5 * 60 * 1000,
     });
   const [refreshing, setRefreshing] = useState(false);
+
+  const handleNavigateToAudio = useCallback(
+    () => router.push(ROUTES.APP.AUDIO),
+    [router],
+  );
+
+  const handleNavigateToMultiSig = useCallback(
+    () => router.push(ROUTES.APP.MULTISIG),
+    [router],
+  );
+
+  const handleNavigateToP2P = useCallback(
+    () => router.push(ROUTES.APP.P2P),
+    [router],
+  );
   
   // Infinite scroll for bounty items
   const bountyRef = useRef(null);
@@ -287,6 +305,29 @@ export function HomeScreen() {
               accessibilityLabel="Refresh home content"
             />
           </View>
+          <View style={styles.featureActions}>
+            <ActionButton
+              title="Audio"
+              onPress={handleNavigateToAudio}
+              variant="secondary"
+              style={styles.featureButton}
+              accessibilityLabel="Open audio playback screen"
+            />
+            <ActionButton
+              title="Multi-Sig"
+              onPress={handleNavigateToMultiSig}
+              variant="secondary"
+              style={styles.featureButton}
+              accessibilityLabel="Open multi-signature approval screen"
+            />
+            <ActionButton
+              title="Peer Transfer"
+              onPress={handleNavigateToP2P}
+              variant="secondary"
+              style={styles.featureButton}
+              accessibilityLabel="Open peer-to-peer transfer screen"
+            />
+          </View>
         </View>
 
         {isStale && cachedAt && (
@@ -353,6 +394,18 @@ const styles = StyleSheet.create({
     marginTop: Spacing.lg,
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  featureActions: {
+    marginTop: Spacing.sm,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  featureButton: {
+    flex: 1,
+    minWidth: 100,
+    marginRight: Spacing.sm,
+    marginBottom: Spacing.sm,
   },
   staleBadge: {
     borderRadius: Radius.lg,
