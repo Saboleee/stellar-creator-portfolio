@@ -149,7 +149,7 @@ const ACTIVITY_ICON: Record<string, string> = {
 
 // ─── Screen ───────────────────────────────────────────────────────────────────
 
-export function DashboardScreen() {
+export function DashboardScreen({ navigation }: { navigation?: any }) {
   const { colors, isDark } = useTheme();
   const [period, setPeriod] = useState<AnalyticsPeriod>('30d');
 
@@ -347,6 +347,17 @@ export function DashboardScreen() {
             {BountiesSection}
             {SkillsSection}
             {ActivitySection}
+            <Pressable
+              onPress={() => navigation?.navigate('FocusTimer')}
+              style={[styles.focusModeCard, { backgroundColor: colors.surface, borderColor: colors.primary + '40' }]}
+              accessibilityRole="button"
+              accessibilityLabel="Open Focus Mode"
+            >
+              <Text style={[styles.focusModeTitle, { color: colors.text }]}>🍅 Focus Mode</Text>
+              <Text style={[styles.focusModeSubtitle, { color: colors.textSecondary }]}>
+                Start a Pomodoro session
+              </Text>
+            </Pressable>
           </>
         )}
       </ScrollView>
@@ -424,4 +435,18 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
   },
   loadingText: { fontSize: FontSize.base },
+  focusModeCard: {
+    borderRadius: Radius.xl,
+    borderWidth: 1,
+    padding: Spacing.base,
+    ...Shadow.sm,
+  },
+  focusModeTitle: {
+    fontSize: FontSize.md,
+    fontWeight: FontWeight.bold,
+    marginBottom: 2,
+  },
+  focusModeSubtitle: {
+    fontSize: FontSize.sm,
+  },
 });

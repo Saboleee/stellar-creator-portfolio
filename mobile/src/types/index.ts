@@ -3,6 +3,7 @@
 export type RootStackParamList = {
   MainTabs: undefined;
   Dashboard: undefined;
+  FocusTimer: undefined;
   DetailsView: undefined;
   LanguageSettings: undefined;
   PortfolioUpload: undefined;
@@ -131,4 +132,14 @@ export interface VideoFrame {
   index: number;
   timestampMs: number;
   uri: string; // thumbnail URI
+}
+
+// ─── Focus Timer ──────────────────────────────────────────────────────────────
+
+export interface FocusSession {
+  id: string;
+  bountyId: string | null;
+  phase: 'focus' | 'short-break' | 'long-break';
+  durationSeconds: number;
+  completedAt: string; // ISO 8601
 }
