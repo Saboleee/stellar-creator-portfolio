@@ -14,6 +14,28 @@ pub struct SocialProof {
     pub submitted_at: u64,
 }
 
+/// On-chain tier levels mirroring the DB enum.
+/// Stored as u32 for compact Soroban storage.
+/// NONE=0  VERIFIED=1  TRUSTED=2  ELITE=3
+#[contracttype]
+#[derive(Clone, PartialEq, Debug)]
+pub enum VerificationTier {
+    None,
+    Verified,
+    Trusted,
+    Elite,
+}
+
+/// Tier attestation stored for each creator address
+#[contracttype]
+#[derive(Clone)]
+pub struct TierAttestation {
+    pub owner: Address,
+    pub tier: VerificationTier,
+    pub attested_at: u64,
+    pub attested_by: Address, // platform oracle / admin address
+}
+
 #[contracttype]
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub enum KycLevel {
@@ -37,6 +59,7 @@ pub enum DataKey {
     ProofCount(Address),
     KycAttestation(Address),
     Admin,
+    Tier(Address),
 }
 
 #[contract]
@@ -171,7 +194,47 @@ impl IdentityContract {
     pub fn get_kyc_attestation(env: Env, user: Address) -> Option<KycAttestation> {
         env.storage().persistent().get(&DataKey::KycAttestation(user))
     }
+
+    /// Attest a creator's verification tier on-chain.
+    /// Only the platform oracle (attester) may call this.
+    pub fn set_tier(
+        env: Env,
+        attester: Address,
+        owner: Address,
+        tier: VerificationTier,
+    ) -> bool {
+        attester.require_auth();
+
+        let attestation = TierAttestation {
+            owner: owner.clone(),
+            tier: tier.clone(),
+            attested_at: env.ledger().timestamp(),
+            attested_by: attester,
+        };
+
+        env.storage()
+            .persistent()
+            .set(&DataKey::Tier(owner.clone()), &attestation);
+
+        env.events().publish(
+            (symbol_short!("identity"), symbol_short!("tier_set")),
+            (owner, tier),
+        );
+
+        true
+    }
+
+    /// Retrieve the tier attestation for a creator.
+    /// Returns None variant attestation if not yet set.
+    pub fn get_tier(env: Env, owner: Address) -> VerificationTier {
+        env.storage()
+            .persistent()
+            .get::<DataKey, TierAttestation>(&DataKey::Tier(owner))
+            .map(|a| a.tier)
+            .unwrap_or(VerificationTier::None)
+    }
 }
 
 #[cfg(test)]
 mod test;
+
