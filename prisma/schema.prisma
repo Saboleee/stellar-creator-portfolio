@@ -67,6 +67,7 @@ model User {
   inAppNotifications     InAppNotification[]
   emailDeliveryLogs      EmailDeliveryLog[]
   emailUnsubscribeToken  String? @unique
+  emailBounced           Boolean @default(false)
   matchFeedback       MatchFeedback[]
   matchNotifications  MatchNotification[]
   auditLogs           AuditLog[]

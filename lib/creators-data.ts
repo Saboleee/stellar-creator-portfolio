@@ -307,6 +307,13 @@ export interface Bounty {
   requiredSkills: string[];
   deliverables: string;
   milestones?: Milestone[];
+  milestones?: Array<{
+    index: number;
+    description: string;
+    amount: number;
+    released: boolean;
+  }>;
+  escrowStatus?: 'active' | 'complete' | 'released';
 }
 
 export interface BountyApplication {
@@ -341,6 +348,12 @@ export const bounties: Bounty[] = [
     postedDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
     requiredSkills: ['Brand Design', 'Logo Design', 'Typography', 'Figma'],
     deliverables: 'Logo files, brand guide PDF, color palette, typography system',
+    escrowStatus: 'active',
+    milestones: [
+      { index: 0, description: 'Discovery & mood boards', amount: 900, released: true },
+      { index: 1, description: 'Logo & visual identity', amount: 1200, released: false },
+      { index: 2, description: 'Brand guidelines delivery', amount: 900, released: false },
+    ],
   },
   {
     id: 'bounty-2',
